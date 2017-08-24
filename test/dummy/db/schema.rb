@@ -10,6 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20170824144454) do
+
+  create_table "reservations", force: :cascade do |t|
+    t.datetime "time_interval_start_time"
+    t.datetime "time_interval_end_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 end

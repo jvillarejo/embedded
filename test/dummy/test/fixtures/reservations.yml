@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  time_interval_start_time: 2017-08-24 11:45:01
+  time_interval_end_time: 2017-08-24 11:45:01
+
+two:
+  time_interval_start_time: 2017-08-24 11:45:01
+  time_interval_end_time: 2017-08-24 11:45:01
