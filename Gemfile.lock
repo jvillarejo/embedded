@@ -46,6 +46,7 @@ GEM
       tzinfo (~> 1.1)
     arel (8.0.0)
     builder (3.2.3)
+    byebug (9.1.0)
     concurrent-ruby (1.0.5)
     erubi (1.6.1)
     globalid (0.4.0)
@@ -111,6 +112,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  byebug
   embedded!
   sqlite3
 

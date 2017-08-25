@@ -5,7 +5,7 @@ module Embedded
   end
 
   module ClassMethods
-    def column_names(attr_name='', attributes=[])
+    def embedded_column_names(attr_name='', attributes=[])
       attributes.inject({}) do |hash, a|
         hash.merge(:"#{attr_name}_#{a}" => a)
       end
@@ -13,7 +13,7 @@ module Embedded
 
     def embeds(attr_name, options = {})
       attributes = options[:attrs]
-      columns = column_names(attr_name,attributes)
+      columns = embedded_column_names(attr_name,attributes)
       clazz = attr_name.to_s.camelcase.constantize
 
       self.send(:define_method, attr_name) do

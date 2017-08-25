@@ -8,7 +8,7 @@ class TimeInterval
 
   def ==(other)
     return false if other.nil?
-
-    @start_time == other.start_time && @end_time == other.end_time
+    @start_time.utc.round == other.start_time.utc.round && 
+    @end_time.utc.round == other.end_time.utc.round
   end
 end
