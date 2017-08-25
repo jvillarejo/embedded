@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170824144454) do
+ActiveRecord::Schema.define(version: 20170825185716) do
+
+  create_table "orders", force: :cascade do |t|
+    t.string "price_currency"
+    t.decimal "price_amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "reservations", force: :cascade do |t|
     t.datetime "time_interval_start_time"

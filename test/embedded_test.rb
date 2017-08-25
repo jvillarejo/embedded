@@ -35,6 +35,42 @@ class Embedded::Test < ActiveSupport::TestCase
     assert_equal time_interval, reservation.time_interval
   end
 
+  def test_reservation_with_time_interval_on_constructor
+    time_interval = TimeInterval.new(start_time: 3.hours.ago, end_time: Time.zone.now)
+    reservation = Reservation.new(time_interval: time_interval)
+    assert_equal time_interval, reservation.time_interval
+  end
+
+  def test_reservation_return_persisted_when_querying_with_time_interval
+    time_interval_1 = TimeInterval.new(start_time: 3.hours.ago, end_time: Time.zone.now)
+    reservation_1 = Reservation.create(time_interval: time_interval_1)
+    
+    time_interval_2 = TimeInterval.new(start_time: 4.hours.ago, end_time: 2.hours.ago)
+    reservation_2 = Reservation.create(time_interval: time_interval_2)
+
+    assert_equal reservation_2, Reservation.where(time_interval: time_interval_2).first
+  end
+
+  def test_order_return_persisted_when_querying_with_price
+    price_1 = Price.new(currency: 'ARS', amount: 350)
+    order_1 = Order.create(price: price_1)
+
+    price_2 = Price.new(currency: 'USD', amount: 100)
+    order_2 = Order.create(price: price_2)
+
+    assert_equal order_2, Order.where(price: price_2).first
+  end
+
+  def test_order_return_persisted_when_querying_with_id
+    price_1 = Price.new(currency: 'ARS', amount: 350)
+    order_1 = Order.create(price: price_1)
+
+    price_2 = Price.new(currency: 'USD', amount: 100)
+    order_2 = Order.create(price: price_2)
+
+    assert_equal order_2, Order.where(id: order_2.id).first
+  end
+
   def test_reservation_has_time_interval_setter
     reservation = Reservation.new
 
