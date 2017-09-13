@@ -48,7 +48,9 @@ class Embedded::Test < ActiveSupport::TestCase
     time_interval_2 = TimeInterval.new(start_time: 4.hours.ago, end_time: 2.hours.ago)
     reservation_2 = Reservation.create(time_interval: time_interval_2)
 
-    assert_equal reservation_2, Reservation.where(time_interval: time_interval_2).first
+    assert_equal reservation_2, Reservation.embedded
+                                           .where(time_interval: time_interval_2)
+                                           .first
   end
 
   def test_order_return_persisted_when_querying_with_price
@@ -58,7 +60,9 @@ class Embedded::Test < ActiveSupport::TestCase
     price_2 = Price.new(currency: 'USD', amount: 100)
     order_2 = Order.create(price: price_2)
 
-    assert_equal order_2, Order.where(price: price_2).first
+    assert_equal order_2, Order.embedded
+                               .where(price: price_2)
+                               .first
   end
 
   def test_order_return_persisted_when_querying_with_id
@@ -68,7 +72,8 @@ class Embedded::Test < ActiveSupport::TestCase
     price_2 = Price.new(currency: 'USD', amount: 100)
     order_2 = Order.create(price: price_2)
 
-    assert_equal order_2, Order.where(id: order_2.id).first
+    assert_equal order_2, Order.where(id: order_2.id)
+                               .first
   end
 
   def test_reservation_has_time_interval_setter

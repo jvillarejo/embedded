@@ -4,19 +4,18 @@ module Embedded
   included do
   end
 
-  module ClassMethods
-    def embedded_column_names(attr_name, attributes)
-      attributes.inject({}) do |hash, a|
-        hash.merge(:"#{attr_name}_#{a}" => a)
-      end
+  class EmbeddedScope
+    def initialize(scope,attributes)
+      @attributes = attributes
+      @scope = scope
     end
 
     def where(opts = :chain, *rest)
-      if(opts.is_a?(Hash) && opts.keys.any? { |k| embedded_attributes[k]})
+      if(opts.is_a?(Hash) && opts.keys.any? { |k| @attributes[k]})
         opts = opts.inject({}) do |h,(k,v)|
 
-          if embedded_attributes[k]
-            attrs = embedded_attributes[k][:attrs].inject({}) do |w,s|
+          if @attributes[k]
+            attrs = @attributes[k][:attrs].inject({}) do |w,s|
               w.merge(:"#{k}_#{s}" => v.send(s))
             end
 
@@ -26,10 +25,23 @@ module Embedded
           end
         end
 
-        super(opts,*rest)
+        @scope.where(opts,*rest)
       else
-        super
+        @scope.where(opts, *rest)
       end
+    end
+  end
+
+
+  module ClassMethods
+    def embedded_column_names(attr_name, attributes)
+      attributes.inject({}) do |hash, a|
+        hash.merge(:"#{attr_name}_#{a}" => a)
+      end
+    end
+
+    def embedded 
+      EmbeddedScope.new(self,embedded_attributes)
     end
 
     def embeds(attr_name, options = {})
