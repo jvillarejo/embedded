@@ -20,7 +20,11 @@ module Embedded
         end
       end
 
-      @scope.where(opts, *rest)
+      self.class.new(@scope.where(opts, *rest), @attributes)
+    end
+
+    def method_missing(method, *args, &block)
+      @scope.send(method,*args,&block)
     end
   end
 end

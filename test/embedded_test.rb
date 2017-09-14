@@ -115,6 +115,21 @@ class Embedded::Test < ActiveSupport::TestCase
                          .size
   end
 
+  def test_order_return_persisted_when_querying_with_chained_embedded_values
+    price_1 = Price.new(currency: 'ARS', amount: 350)
+    weight_1 = MeasurementUnit.new(magnitude: 'kg', quantity: 100)
+    order_1 = Order.create(price: price_1,weight: weight_1)
+
+    price_2 = Price.new(currency: 'USD', amount: 100)
+    weight_2 = MeasurementUnit.new(magnitude: 'lb', quantity: 100)
+    order_2 = Order.create(price: price_2,weight: weight_2)
+
+    assert_equal 0, Order.embedded
+                         .where(price: price_2)
+                         .where(weight: weight_1)
+                         .size
+  end
+
   def test_order_return_persisted_when_querying_with_id
     price_1 = Price.new(currency: 'ARS', amount: 350)
     order_1 = Order.create(price: price_1)
