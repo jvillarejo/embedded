@@ -12,11 +12,13 @@ module Embedded
     end
 
     def where(opts = :chain, *rest)
-      opts = opts.inject({}) do |h,(k,v)|
-        if @attributes[k]
-          h.merge(embedded_attributes_for(k,v))
-        else
-          h
+      if opts.is_a?(Hash)
+        opts = opts.inject({}) do |h,(k,v)|
+          if @attributes[k]
+            h.merge(embedded_attributes_for(k,v))
+          else
+            h
+          end
         end
       end
 

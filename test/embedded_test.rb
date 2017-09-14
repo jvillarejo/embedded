@@ -76,6 +76,19 @@ class Embedded::Test < ActiveSupport::TestCase
                                            .size
   end
 
+  def test_embedded_querying_class_scope
+    assert_equal Embedded::Scope, Reservation.embedded.class
+  end
+
+  def test_embedded_querying_class_scope_chained
+    assert_equal Embedded::Scope, Reservation.embedded
+                                             .where.class
+  end
+
+  def test_embedded_querying_class_scope_withoud_embedded
+    assert_equal ActiveRecord::QueryMethods::WhereChain, Reservation.where.class
+  end
+
   def test_embedded_doesnt_override_non_embedded_atrributes_when_querying
     time_interval_1 = TimeInterval.new(start_time: 3.hours.ago, end_time: Time.zone.now)
     reservation_1 = Reservation.create(time_interval: time_interval_1)
