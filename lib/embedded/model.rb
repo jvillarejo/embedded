@@ -17,7 +17,7 @@ module Embedded
 
       attributes = options[:attrs]
       columns = embedded_column_names(embeddable_attr,attributes)
-      clazz = embeddable_attr.to_s.camelcase.constantize
+      clazz = options[:class_name] ? options[:class_name].constantize : embeddable_attr.to_s.camelcase.constantize
 
       self.send(:define_method, embeddable_attr) do
         values = columns.inject({}) do |hash,(k,v)|

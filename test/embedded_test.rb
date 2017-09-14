@@ -41,6 +41,16 @@ class Embedded::Test < ActiveSupport::TestCase
     assert_equal time_interval, reservation.time_interval
   end
 
+  def test_order_has_class_name_and_attr
+    weight = MeasurementUnit.new(magnitude: 'kg', quantity: 100)
+
+    order = Order.new(weight: weight)
+    order.save
+    order.reload
+
+    assert_equal weight, order.weight
+  end
+
   def test_reservation_return_persisted_when_querying_with_time_interval
     time_interval_1 = TimeInterval.new(start_time: 3.hours.ago, end_time: Time.zone.now)
     reservation_1 = Reservation.create(time_interval: time_interval_1)
@@ -89,6 +99,20 @@ class Embedded::Test < ActiveSupport::TestCase
     assert_equal order_2, Order.embedded
                                .where(price: price_2)
                                .first
+  end
+
+  def test_order_return_persisted_when_querying_with_multiple_embedded_values
+    price_1 = Price.new(currency: 'ARS', amount: 350)
+    weight_1 = MeasurementUnit.new(magnitude: 'kg', quantity: 100)
+    order_1 = Order.create(price: price_1,weight: weight_1)
+
+    price_2 = Price.new(currency: 'USD', amount: 100)
+    weight_2 = MeasurementUnit.new(magnitude: 'lb', quantity: 100)
+    order_2 = Order.create(price: price_2,weight: weight_2)
+
+    assert_equal 0, Order.embedded
+                         .where(price: price_2, weight: weight_1)
+                         .size
   end
 
   def test_order_return_persisted_when_querying_with_id

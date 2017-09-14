@@ -15,6 +15,8 @@ ActiveRecord::Schema.define(version: 20170825185716) do
   create_table "orders", force: :cascade do |t|
     t.string "price_currency"
     t.decimal "price_amount"
+    t.string "weight_magnitude"
+    t.decimal "weight_quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
