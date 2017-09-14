@@ -44,7 +44,7 @@ class Embedded::Test < ActiveSupport::TestCase
   def test_reservation_return_persisted_when_querying_with_time_interval
     time_interval_1 = TimeInterval.new(start_time: 3.hours.ago, end_time: Time.zone.now)
     reservation_1 = Reservation.create(time_interval: time_interval_1)
-    
+
     time_interval_2 = TimeInterval.new(start_time: 4.hours.ago, end_time: 2.hours.ago)
     reservation_2 = Reservation.create(time_interval: time_interval_2)
 
@@ -53,23 +53,23 @@ class Embedded::Test < ActiveSupport::TestCase
                                            .first
   end
 
-  def test_embedded_overrides_embedded_atrributes_when_querying
+  def test_embedded_doestn_overrides_embedded_atrributes_when_querying
     time_interval_1 = TimeInterval.new(start_time: 3.hours.ago, end_time: Time.zone.now)
     reservation_1 = Reservation.create(time_interval: time_interval_1)
-    
+
     time_interval_2 = TimeInterval.new(start_time: 4.hours.ago, end_time: 2.hours.ago)
     reservation_2 = Reservation.create(time_interval: time_interval_2)
 
-    assert_equal reservation_2, Reservation.where(time_interval_start_time: time_interval_1.start_time)
+    assert_equal 0, Reservation.where(time_interval_start_time: time_interval_1.start_time)
                                            .embedded
                                            .where(time_interval: time_interval_2)
-                                           .first
+                                           .size
   end
 
   def test_embedded_doesnt_override_non_embedded_atrributes_when_querying
     time_interval_1 = TimeInterval.new(start_time: 3.hours.ago, end_time: Time.zone.now)
     reservation_1 = Reservation.create(time_interval: time_interval_1)
-    
+
     time_interval_2 = TimeInterval.new(start_time: 4.hours.ago, end_time: 2.hours.ago)
     reservation_2 = Reservation.create(time_interval: time_interval_2)
 
