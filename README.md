@@ -6,17 +6,22 @@ Embedded is a small rails engine to correctly persist Value Objects in Active Re
 
 There objects in every domain that doesn't have an identity by itself but their equality depends on the values of their attributes.
 
-Example: prices, any magnitude, a color, a poligon.
+Example: prices, any magnitude, a color, a polygon.
 
-Defining a value objects let's you extract common behavior from your currrent bloated active record objects.
+Defining a value objects lets you extract common behavior from your current bloated active record objects.
 
 Every time that I did this I had to define a getter and setter for the value object and map those to the columns of the object that gets persisted, so I thought it would be better to define those value object attributes in a declarative way and let the plugin do the magic behind.
 
+For more info about value objects check this links:
+
+* [Value Object by Martin Fowler](https://martinfowler.com/bliki/ValueObject.html)
+* [Don't forget about Value Objects](https://plainoldobjects.com/2017/03/19/dont-forget-about-value-objects)
+
 ## Features
 
-It let's you define value objects and map them into the corresponding value object attributes columns
+It lets you define value objects and map them into the corresponding value object attributes columns
 
-It let's you query by those value objects in a safe way, without monkeypatching the default activerecord classes
+It lets you query by those value objects in a safe way, without monkeypatching the default activerecord classes
 
 ## Installation
 Add this line to your application's Gemfile:
@@ -25,7 +30,7 @@ Add this line to your application's Gemfile:
 gem 'embedded'
 ```
 
-Create an initializer in you rails project
+Create an initializer in your rails project
 
 ```ruby
 # config/initializers/embedded_initializer
@@ -98,8 +103,9 @@ class Shop < ApplicationRecord
 end
 ```
 
-TimeInterval is a plain PORO, it just need the attributes that you defined in your are mapping in your activerecord objects
-```
+TimeInterval is a plain PORO, it just need the attributes that you defined in your activerecord objects mapping.
+
+```ruby
   class TimeInterval
     attr_reader :start_time, :end_time
 
@@ -149,11 +155,71 @@ Your table columns have to be named in a specific way so they are mapped correct
 
 Reservation attribute name is scheduled_time and as TimeInterval has start_time and end_time your column names must be defined as scheduled_time_start_time and scheduled_time_end_time
 
+```ruby
+class CreateReservations < ActiveRecord::Migration
+  def change
+    create_table :reservations do |t|
+      t.timestamp :scheduled_time_start_time
+      t.timestamp :scheduled_time_end_time
 
+      t.timestamps
+    end
+  end
+end
+```
 
+Shop attribute name is available time and as TimeInterval has start_time and end_time attributes, your column names here must be defined as available_time_start_time and available_time_end_time
+
+```ruby
+class CreateShops < ActiveRecord::Migration
+  def change
+    create_table :shops do |t|
+      t.timestamp :available_time_start_time
+      t.timestamp :available_time_end_time
+
+      t.timestamps
+    end
+  end
+end
+```
+
+### Querying
+
+For example you have now a model that has prices in different currencies. 
+
+```ruby
+price = Price.new(currency: 'BTC', amount: BigDecimal.new('2.5'))
+my_gamble = BuyOrder.create(price: price, created_at: Time.new(2015,03,17))
+
+bubble_price = Price.new(currency: 'USD', amount: BigDecimal.new('5257'))
+my_intelligent_investment = SellOrder.create(price: price, created_at: Time.new(2017,10,18))
+```
+
+And we want to check the orders for a specific price we can do this.
+
+```ruby
+price = Price.new(currency: 'BTC', amount: BigDecimal.new('2.5'))
+gambles = BuyOrder.embedded.where(price: price).to_a
+
+# => [#<Order id: 1, price_currency: "BTC", price_amount: #<BigDecimal:555e61776630,'0.25E1',18(36)>, created_at: "2017-03-17 17:11:00", updated_at: "2017-10-18 17:11:00">]
+```
+
+In order to search with values you should specify with embedded method. This decision was made because I didn't want to monkey patch the activerecord method 'where'.
+
+With this way the embedded method returns another scope in which the method 'where' is overridden. If you want to query by the column attributes you can still use the default 'where' method. 
+
+```ruby
+jpm_orders = BuyOrder.where(price_currency: 'BTC')
+jpm_orders.find_each {|o| o.trader.fire! }
+``` 
 
 ## Contributing
-Bug reports and pull requests are welcome on GitHub at https://github.com/jvillarjeo/embedded. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the Contributor Covenant code of conduct.
+
+Everyone is encouraged to help improve this project. Here are a few ways you can help:
+
+- [Report bugs](https://github.com/jvillarejo/embedded/issues)
+- Fix bugs and [submit pull requests](https://github.com/jvillarejo/embedded/pulls)
+- Suggest or add new features
 
 ## License
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
