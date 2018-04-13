@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     embedded (0.1.1)
-      activerecord (~> 4.2.0)
+      activerecord (~> 4.2, >= 4.2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -36,7 +36,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord (~> 4.2.0)
   bundler (~> 1.13)
   byebug (~> 10.0)
   embedded!
