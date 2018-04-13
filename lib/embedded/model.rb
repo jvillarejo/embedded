@@ -10,9 +10,11 @@ module Embedded
       Embedded::Scope.new(self.all,embedded_attributes)
     end
 
+    def embedded_attributes
+      @embedded_attributes ||= {}
+    end
+
     def embeds(embeddable_attr, options = {})
-      cattr_accessor :embedded_attributes
-      self.embedded_attributes ||= {}
       self.embedded_attributes[embeddable_attr] = options
 
       attributes = options[:attrs]
@@ -28,7 +30,7 @@ module Embedded
 
       self.send(:define_method, :"#{embeddable_attr}=") do |v|
         columns.each do |k,a|
-          self.write_attribute(k, v.send(a))
+          write_attribute(k, v.send(a))
         end
       end
     end

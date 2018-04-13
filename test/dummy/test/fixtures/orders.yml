@@ -1,9 +1,0 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  price_currency: MyString
-  price_amount: 9.99
-
-two:
-  price_currency: MyString
-  price_amount: 9.99
