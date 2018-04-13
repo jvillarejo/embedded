@@ -3,7 +3,7 @@
 Embedded is a small rails engine to correctly persist Value Objects in Active Record Object columns
 
 ## Code Status
-[![Build Status][https://travis-ci.org/jvillarejo/embedded.svg?branch=master][https://travis-ci.org/jvillarejo/embedded]
+[![Build Status](https://travis-ci.org/jvillarejo/embedded.svg?branch=master)](https://travis-ci.org/jvillarejo/embedded)
 
 ## Motivation
 
