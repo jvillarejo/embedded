@@ -4,13 +4,13 @@ Embedded is a small rails engine to correctly persist Value Objects in Active Re
 
 ## Motivation
 
-There objects in every domain that doesn't have an identity by itself but their equality depends on the values of their attributes.
+There are objects in every domain that don't have an identity by themselves but in which their equality depends on the values of their attributes.
 
 Example: prices, any magnitude, a color, a polygon.
 
-Defining a value objects lets you extract common behavior from your current bloated active record objects.
+Defining a value object lets you extract common behavior from your current bloated active record objects.
 
-Every time that I did this I had to define a getter and setter for the value object and map those to the columns of the object that gets persisted, so I thought it would be better to define those value object attributes in a declarative way and let the plugin do the magic behind.
+Every time I did this, I had to define a getter and a setter for the value object, and map those to the columns of the object that gets persisted, so I thought that it would be better to define those value object attributes in a declarative way and let the plugin do the magic behind.
 
 For more info about value objects check this links:
 
@@ -48,7 +48,7 @@ end
 
 ## Usage
 
-Let's say you have a Reservation in your active record model and that reservation has a start_time, and end_time. And want you calculate the duration in hours of the period.
+Let's say you have a Reservation in your active record model and that it has a start_time and an end_time. And that you want to calculate the duration in hours of the period.
 
 ```ruby
   class Reservation < ApplicationRecord
@@ -83,7 +83,7 @@ Let's say you have a Reservation in your active record model and that reservatio
   # => 3
 ```
 
-Now you are starting to see the problem. That behavior belongs to a TimeInterval object that has start_time and end_time and let's you calculate all durations and intervals you want.
+Now you are starting to see the problem. That behavior belongs to a TimeInterval object that has a start_time an end_time and let's you calculate all the durations and intervals you want.
 
 So with embedded in hand we can do this.
 
@@ -137,7 +137,7 @@ Now you can pass available time to shop constructor and check the duration direc
   shop.available_time.hours
   # => 3
 ```
-Also you can persist the reservation and when fetching it back of the db it will scheduled_time will be a TimeInterval
+Also you can persist the reservation, and when fetching it back from the db its scheduled_time will be a TimeInterval
 
 ```ruby
   t = TimeInterval.new(start_time: Time.now, end_time: 3.hours.ago)
@@ -153,7 +153,7 @@ Also you can persist the reservation and when fetching it back of the db it will
 
 Your table columns have to be named in a specific way so they are mapped correctly, for example:
 
-Reservation attribute name is scheduled_time and as TimeInterval has start_time and end_time your column names must be defined as scheduled_time_start_time and scheduled_time_end_time
+If Reservation attribute name is scheduled_time and its TimeInterval has start_time and end_time attributes, your column names should be defined as followed:
 
 ```ruby
 class CreateReservations < ActiveRecord::Migration
@@ -168,7 +168,7 @@ class CreateReservations < ActiveRecord::Migration
 end
 ```
 
-Shop attribute name is available time and as TimeInterval has start_time and end_time attributes, your column names here must be defined as available_time_start_time and available_time_end_time
+Shop attribute name is available time, and its TimeInterval has start_time and end_time attributes. Your column names here must be like this:
 
 ```ruby
 class CreateShops < ActiveRecord::Migration
@@ -195,7 +195,7 @@ bubble_price = Price.new(currency: 'USD', amount: BigDecimal.new('5257'))
 my_intelligent_investment = SellOrder.create(price: price, created_at: Time.new(2017,10,18))
 ```
 
-And we want to check the orders for a specific price we can do this.
+And if we want to check the orders for a specific price we can do it like this:
 
 ```ruby
 price = Price.new(currency: 'BTC', amount: BigDecimal.new('2.5'))
@@ -204,9 +204,9 @@ gambles = BuyOrder.embedded.where(price: price).to_a
 # => [#<Order id: 1, price_currency: "BTC", price_amount: #<BigDecimal:555e61776630,'0.25E1',18(36)>, created_at: "2017-03-17 17:11:00", updated_at: "2017-10-18 17:11:00">]
 ```
 
-In order to search with values you should specify with embedded method. This decision was made because I didn't want to monkey patch the activerecord method 'where'.
+In order to search with value objects you should use embedded method. This decision was made because I didn't want to monkey patch the activerecord method 'where'.
 
-With this way the embedded method returns another scope in which the method 'where' is overridden. If you want to query by the column attributes you can still use the default 'where' method. 
+This way the embedded method returns another scope in which the method 'where' is overridden. If you want to query by the column attributes you can still use the default 'where' method. 
 
 ```ruby
 jpm_orders = BuyOrder.where(price_currency: 'BTC')
@@ -215,7 +215,7 @@ jpm_orders.find_each {|o| o.trader.fire! }
 
 ## Contributing
 
-Everyone is encouraged to help improve this project. Here are a few ways you can help:
+Everyone is encouraged to help to improve this project. Here are a few ways you can help:
 
 - [Report bugs](https://github.com/jvillarejo/embedded/issues)
 - Fix bugs and [submit pull requests](https://github.com/jvillarejo/embedded/pulls)
