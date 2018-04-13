@@ -3,3 +3,6 @@ rvm:
  - 2.4.4
  - 2.5.1
  - ruby-head
+
+allow_failures:
+  - rvm: ruby-head
