@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    embedded (0.1.0)
+    embedded (0.1.1)
       activerecord (~> 4.2.0)
 
 GEM
