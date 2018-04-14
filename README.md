@@ -5,6 +5,16 @@ Embedded is a small rails engine to correctly persist Value Objects in Active Re
 ## Code Status
 [![Build Status](https://travis-ci.org/jvillarejo/embedded.svg?branch=master)](https://travis-ci.org/jvillarejo/embedded)
 
+Embedded supports and was tested against this Ruby and Rails versions:
+
+* Ruby 2.1.5 and Rails 3.2 (it's a shame but I have a legacy project)
+* Ruby 2.4 and Rails 4.2
+* Ruby 2.4 and Rails 5.1
+* Ruby 2.4 and Rails 5.2
+* Ruby 2.5 and Rails 4.2
+* Ruby 2.5 and Rails 5.1
+* Ruby 2.5 and Rails 5.2
+
 ## Motivation
 
 There are objects in every domain that don't have an identity by themselves but in which their equality depends on the values of their attributes.
