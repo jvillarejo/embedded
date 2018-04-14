@@ -162,7 +162,7 @@ Also you can persist the reservation, and when fetching it back from the db its 
   # => 3
 ```
 
-Embedded also supports passing a hash to the setter, so you can still use fields_for in forms pass request params to the model objects.
+Embedded also supports passing a hash to the setter, so you can still use ```fields_for``` in form views and also use request params to create activerecord model objects.
 
 ```ruby
   reservation = Reservation.create(scheduled_time: {
