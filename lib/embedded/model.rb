@@ -7,7 +7,13 @@ module Embedded
     end
 
     def embedded
-      Embedded::Scope.new(self.all,embedded_attributes)
+      if ActiveRecord::VERSION::MAJOR >= 4
+        scope = all
+      else
+        scope = scoped
+      end
+      
+      Embedded::Scope.new(scope,embedded_attributes)
     end
 
     def embedded_attributes
