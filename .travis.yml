@@ -6,7 +6,6 @@ rvm:
  - ruby-head
 
 allow_failures:
-  - env: "ACTIVE_RECORD_VERSION=master"
   - rvm: ruby-head
 
 env:
@@ -34,5 +33,7 @@ matrix:
     env: ACTIVE_RECORD_VERSION=3.2.22
   - rvm: 2.5.1
     env: ACTIVE_RECORD_VERSION=3.2.22
+  - rvm: ruby-head
+    env: ACTIVE_RECORD_VERSION=3.2.22
 
-script: bundle update; bundle exec rake
+script: bundle exec rake test
