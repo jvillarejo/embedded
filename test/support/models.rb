@@ -13,7 +13,6 @@ class TimeInterval
   end
 end
 
-
 class Price
   attr_reader :currency, :amount
 
@@ -46,8 +45,33 @@ class MeasurementUnit
   end
 end
 
+class PersonalDocument
+  attr_reader :number, :type
+
+  def initialize(values = {})
+    @number = values.fetch(:number)
+    @type = values.fetch(:type)
+  end
+
+  def ==(other)
+    return false if !other.is_a?(PersonalDocument)
+
+    @number == other.number && @type == other.type
+  end
+end
+
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
+end
+
+
+class Person < ApplicationRecord
+  extend Embedded::Model
+
+  embeds :identification, attrs: {
+    number: :id_number,
+    type: :id_type
+  }, class_name: 'PersonalDocument'
 end
 
 class Order < ApplicationRecord

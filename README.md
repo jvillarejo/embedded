@@ -164,8 +164,9 @@ Also you can persist the reservation, and when fetching it back from the db its 
 
 ### Database Mapping
 
-Your table columns have to be named in a specific way so they are mapped correctly, for example:
+The default convention column mapping is the value object name as prefix and the value object attribute as suffix.
 
+Example:
 If Reservation attribute name is scheduled_time and its TimeInterval has start_time and end_time attributes, your column names should be defined as followed:
 
 ```ruby
@@ -192,6 +193,47 @@ class CreateShops < ActiveRecord::Migration
 
       t.timestamps
     end
+  end
+end
+```
+
+We can override this convetion if you pass attrs argument as hash where you define the mapping. 
+
+Example: 
+```ruby
+class PersonalDocument
+  attr_reader :number, :type
+
+  def initialize(values = {})
+    @number = values.fetch(:number)
+    @type = values.fetch(:type)
+  end
+
+  def ==(other)
+    return false if !other.is_a?(PersonalDocument)
+
+    @number == other.number && @type == other.type
+  end
+end
+
+class Person < ApplicationRecord
+  embeds :identification, attrs: { 
+    number: id_number, 
+    type: id_type
+  }, class_name: 'PersonalDocument'
+end
+
+class CreatePeople < ActiveRecord::Migration
+  def change
+    create_table :people do |t|
+      t.string :id_number
+      t.string :id_type
+
+      t.timestamps
+    end
+
+    add_index :people, :id_number
+    add_index :people, :id_type
   end
 end
 ```

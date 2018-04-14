@@ -3,8 +3,14 @@ module Embedded
     ScopeMethod = ActiveRecord::VERSION::MAJOR >= 4 ? :all.freeze : :scoped.freeze
 
     def embedded_column_names(embeddable_attr, attributes)
-      attributes.inject({}) do |hash, a|
-        hash.merge(:"#{embeddable_attr}_#{a}" => a)
+      if attributes.is_a?(Array)
+        attributes.inject({}) do |hash, a|
+          hash.merge(:"#{embeddable_attr}_#{a}" => a)
+        end
+      elsif attributes.is_a?(Hash)
+        attributes.invert
+      else
+        raise ArgumentError.new('invalid attributes')
       end
     end
 
