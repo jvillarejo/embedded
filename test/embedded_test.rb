@@ -93,10 +93,6 @@ class Embedded::Test < Minitest::Test
                                              .where.class
   end
 
-  def test_embedded_querying_class_scope_withoud_embedded
-    assert_equal ActiveRecord::QueryMethods::WhereChain, Reservation.where.class
-  end
-
   def test_embedded_doesnt_override_non_embedded_atrributes_when_querying
     time_interval_1 = TimeInterval.new(start_time: 3.hours.ago, end_time: Time.now)
     reservation_1 = Reservation.create(time_interval: time_interval_1)

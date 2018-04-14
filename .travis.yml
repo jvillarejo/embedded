@@ -1,15 +1,38 @@
 language: ruby
 rvm:
+ - 2.1.5
  - 2.4.4
  - 2.5.1
  - ruby-head
 
 allow_failures:
   - rvm: ruby-head
-  
+
+env:
+  - "ACTIVE_RECORD_VERSION=3.2.22"
+  - "ACTIVE_RECORD_VERSION=4.2.10"
+  - "ACTIVE_RECORD_VERSION=5.1.6"
+  - "ACTIVE_RECORD_VERSION=5.2.0"
+
 before_install:
-  - "rm ${BUNDLE_GEMFILE}.lock"
   - "travis_retry gem update --system"
   - "travis_retry gem install bundler"
 
-script: bundle exec rake
+matrix:
+  exclude:
+  - rvm: 2.1.5
+    env: ACTIVE_RECORD_VERSION=4.2.10
+  - rvm: 2.1.5
+    env: ACTIVE_RECORD_VERSION=4.2.10
+  - rvm: 2.1.5
+    env: ACTIVE_RECORD_VERSION=5.1.6
+  - rvm: 2.1.5
+    env: ACTIVE_RECORD_VERSION=5.2.0
+  - rvm: 2.4.4
+    env: ACTIVE_RECORD_VERSION=3.2.22
+  - rvm: 2.5.1
+    env: ACTIVE_RECORD_VERSION=3.2.22
+  - rvm: ruby-head
+    env: ACTIVE_RECORD_VERSION=3.2.22
+
+script: bundle exec rake test

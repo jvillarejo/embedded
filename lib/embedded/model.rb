@@ -1,5 +1,7 @@
 module Embedded
   module Model
+    ScopeMethod = ActiveRecord::VERSION::MAJOR >= 4 ? :all.freeze : :scoped.freeze
+
     def embedded_column_names(embeddable_attr, attributes)
       attributes.inject({}) do |hash, a|
         hash.merge(:"#{embeddable_attr}_#{a}" => a)
@@ -7,7 +9,7 @@ module Embedded
     end
 
     def embedded
-      Embedded::Scope.new(self.all,embedded_attributes)
+      Embedded::Scope.new(send(ScopeMethod),embedded_attributes)
     end
 
     def embedded_attributes
