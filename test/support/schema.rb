@@ -21,6 +21,11 @@ ActiveRecord::Schema.define(version: 20170825185716) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "people", force: :cascade do |t|
+    t.string "id_number"
+    t.string "id_type"
+  end
+
   create_table "reservations", force: :cascade do |t|
     t.datetime "time_interval_start_time"
     t.datetime "time_interval_end_time"

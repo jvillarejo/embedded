@@ -19,6 +19,28 @@ class Embedded::Test < Minitest::Test
     }, hash)
   end
 
+  def test_person_embedded_overriding_convetional_columns
+    national_id = PersonalDocument.new(number: '17234123', type: 'DNI')
+
+    person = Person.create(identification: national_id)
+
+    assert_equal national_id, person.reload.identification
+  end
+
+  def test_person_querying_overriding_conventional_columns
+    dni = PersonalDocument.new(number: '17234123', type: 'DNI')
+
+    Person.create(identification: dni)
+
+    driver_license = PersonalDocument.new(number: '17234123', type: 'Driver License')
+    person_2 = Person.create(identification: driver_license)
+
+    assert_equal person_2, Person.embedded
+                                 .where(identification: driver_license)
+                                 .first
+
+  end
+
   def test_reservation_has_time_interval_getter
     reservation = Reservation.new
 

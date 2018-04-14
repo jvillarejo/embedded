@@ -6,8 +6,16 @@ module Embedded
     end
 
     def embedded_attributes_for(embeddable_attr, value = nil)
-      @attributes[embeddable_attr][:attrs].inject({}) do |a,attr|
-        a.merge(:"#{embeddable_attr}_#{attr}" => value ? value.send(attr) : nil)
+      attrs = @attributes[embeddable_attr][:attrs]
+
+      if attrs.is_a?(Array)
+        attrs.inject({}) do |a,attr|
+          a.merge(:"#{embeddable_attr}_#{attr}" => value ? value.send(attr) : nil)
+        end
+      elsif attrs.is_a?(Hash)
+        attrs.inject({}) do |a,(attr,column)| 
+          a.merge(column => value ? value.send(attr) : nil)
+        end
       end
     end
 
