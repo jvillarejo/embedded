@@ -27,6 +27,17 @@ class Embedded::Test < Minitest::Test
     assert_equal national_id, person.reload.identification
   end
 
+  def test_person_embedded_creation_with_hash_params
+    national_id = PersonalDocument.new(number: '17234123', type: 'DNI')
+
+    person = Person.create(identification: {
+               number: '17234123',
+               type: 'DNI'
+             })
+
+    assert_equal national_id, person.reload.identification
+  end
+
   def test_person_querying_overriding_conventional_columns
     dni = PersonalDocument.new(number: '17234123', type: 'DNI')
 

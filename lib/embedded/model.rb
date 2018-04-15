@@ -37,8 +37,16 @@ module Embedded
       end
 
       self.send(:define_method, :"#{embeddable_attr}=") do |v|
-        columns.each do |k,a|
-          write_attribute(k, v.send(a))
+        if v.is_a?(clazz)
+          columns.each do |k,a|
+            write_attribute(k, v.send(a))
+          end
+        elsif v.is_a?(Hash)
+          columns.each do |k,a|
+            write_attribute(k, v[a])
+          end
+        else
+          raise ArgumentError.new("invalid class. #{clazz.to_s} or Hash was expected")
         end
       end
     end

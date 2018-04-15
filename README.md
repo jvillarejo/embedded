@@ -162,6 +162,20 @@ Also you can persist the reservation, and when fetching it back from the db its 
   # => 3
 ```
 
+Embedded also supports passing a hash to the setter, so you can still use ```fields_for``` in form views and also use request params to create activerecord model objects.
+
+```ruby
+  reservation = Reservation.create(scheduled_time: {
+    start_time: Time.now,
+    end_time: 3.hours.ago
+  })
+
+  reservation.reload
+
+  reservation.scheduled_time.hours
+  # => 3
+```
+
 ### Database Mapping
 
 The default convention column mapping is the value object name as prefix and the value object attribute as suffix.
