@@ -290,5 +290,9 @@ Everyone is encouraged to help to improve this project. Here are a few ways you 
 - Fix bugs and [submit pull requests](https://github.com/jvillarejo/embedded/pulls)
 - Suggest or add new features
 
+## Maintainer
+
+Juani Villarejo <contact@jonvillage.com>
+
 ## License
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
