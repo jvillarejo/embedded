@@ -232,8 +232,8 @@ end
 
 class Person < ApplicationRecord
   embeds :identification, attrs: { 
-    number: id_number, 
-    type: id_type
+    number: :id_number, 
+    type: :id_type
   }, class_name: 'PersonalDocument'
 end
 
