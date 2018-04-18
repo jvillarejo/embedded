@@ -30,6 +30,19 @@ For more info about value objects check this links:
 * [Value Object by Martin Fowler](https://martinfowler.com/bliki/ValueObject.html)
 * [Don't forget about Value Objects](https://plainoldobjects.com/2017/03/19/dont-forget-about-value-objects)
 
+### What about ActiveRecord composed_of API ?
+
+Sincerly at the time of written this I didn't know about ActiveRecord [composed_of](http://api.rubyonrails.org/classes/ActiveRecord/Aggregations/ClassMethods.html) API. 
+
+I feel embarrassed about this because I usually read the Rails code, maybe my mind forgot about it. Thanks to a very good samaritan on Reddit that pointed me to it. 
+
+As I take a very good look to composed_of there are some things that make me noise: 
+* A lack of conventions, you have to configure everything in it.
+* The mapping is defined as an array of arrays instead of a simple hash as embedded. 
+* That Rails dev team tried remove and then reverted it. [PR 6743](https://github.com/rails/rails/pull/6743)
+
+So I'm thinking to still use and maintain this gem, but I will improve it to use composed_of under the hood as it's not a good practice to duplicate functionalities in a system. And if the Rails dev team remove the composed_of API in a future, I can maintain it with this gem too. 
+
 ## Features
 
 It lets you define value objects and map them into the corresponding value object attributes columns
