@@ -23,6 +23,8 @@ module Embedded
     end
 
     def embeds(embeddable_attr, options = {})
+
+      # add comment for test
       self.embedded_attributes[embeddable_attr] = options
 
       attributes = options[:attrs]
